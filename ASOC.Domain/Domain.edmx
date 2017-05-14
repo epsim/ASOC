@@ -1,0 +1,424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="COMPONENT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID_SERIES" Type="number" Precision="38" Scale="0" />
+          <Property Name="ID_MODEL" Type="number" Precision="38" Scale="0" />
+          <Property Name="ID_TYPE" Type="number" Precision="38" Scale="0" />
+          <Property Name="NAME" Type="varchar2" MaxLength="200" />
+          <Property Name="DATE_ADD" Type="date" />
+          <Property Name="PARTNUMBER" Type="varchar2" MaxLength="200" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="AMOUNT" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="CURRENT_STATUS">
+          <Key>
+            <PropertyRef Name="ID_SERIES" />
+          </Key>
+          <Property Name="ID_SERIES" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID_STATUS" Type="number" Precision="38" Scale="0" />
+          <Property Name="DATE_STATUS" Type="date" />
+        </EntityType>
+        <EntityType Name="MODEL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="varchar2" MaxLength="200" />
+          <Property Name="ID_TYPE" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRICE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID_MODEL" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATE_ADD" Type="date" />
+          <Property Name="PRICE" Type="float" Precision="126" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="STATUS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="varchar2" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="TYPE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="varchar2" MaxLength="200" />
+        </EntityType>
+        <Association Name="COMPONENT_CURRENT_FK">
+          <End Role="CURRENT_STATUS" Type="Self.CURRENT_STATUS" Multiplicity="0..1" />
+          <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CURRENT_STATUS">
+              <PropertyRef Name="ID_SERIES" />
+            </Principal>
+            <Dependent Role="COMPONENT">
+              <PropertyRef Name="ID_SERIES" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="COMPONENT_MODEL_FK">
+          <End Role="MODEL" Type="Self.MODEL" Multiplicity="0..1" />
+          <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODEL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="COMPONENT">
+              <PropertyRef Name="ID_MODEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="COMPONENT_TYPE_FK">
+          <End Role="TYPE" Type="Self.TYPE" Multiplicity="0..1" />
+          <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="COMPONENT">
+              <PropertyRef Name="ID_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CURRENT_STATUS_FK">
+          <End Role="STATUS" Type="Self.STATUS" Multiplicity="0..1" />
+          <End Role="CURRENT_STATUS" Type="Self.CURRENT_STATUS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATUS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CURRENT_STATUS">
+              <PropertyRef Name="ID_STATUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MODEL_TYPE_FK">
+          <End Role="TYPE" Type="Self.TYPE" Multiplicity="1" />
+          <End Role="MODEL" Type="Self.MODEL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MODEL">
+              <PropertyRef Name="ID_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PRICE_MODEL_FK">
+          <End Role="MODEL" Type="Self.MODEL" Multiplicity="1" />
+          <End Role="PRICE" Type="Self.PRICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODEL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRICE">
+              <PropertyRef Name="ID_MODEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="COMPONENT" EntityType="Self.COMPONENT" Schema="ROOT" store:Type="Tables" />
+          <EntitySet Name="CURRENT_STATUS" EntityType="Self.CURRENT_STATUS" Schema="ROOT" store:Type="Tables" />
+          <EntitySet Name="MODEL" EntityType="Self.MODEL" Schema="ROOT" store:Type="Tables" />
+          <EntitySet Name="PRICE" EntityType="Self.PRICE" Schema="ROOT" store:Type="Tables" />
+          <EntitySet Name="STATUS" EntityType="Self.STATUS" Schema="ROOT" store:Type="Tables" />
+          <EntitySet Name="TYPE" EntityType="Self.TYPE" Schema="ROOT" store:Type="Tables" />
+          <AssociationSet Name="COMPONENT_CURRENT_FK" Association="Self.COMPONENT_CURRENT_FK">
+            <End Role="CURRENT_STATUS" EntitySet="CURRENT_STATUS" />
+            <End Role="COMPONENT" EntitySet="COMPONENT" />
+          </AssociationSet>
+          <AssociationSet Name="COMPONENT_MODEL_FK" Association="Self.COMPONENT_MODEL_FK">
+            <End Role="MODEL" EntitySet="MODEL" />
+            <End Role="COMPONENT" EntitySet="COMPONENT" />
+          </AssociationSet>
+          <AssociationSet Name="COMPONENT_TYPE_FK" Association="Self.COMPONENT_TYPE_FK">
+            <End Role="TYPE" EntitySet="TYPE" />
+            <End Role="COMPONENT" EntitySet="COMPONENT" />
+          </AssociationSet>
+          <AssociationSet Name="CURRENT_STATUS_FK" Association="Self.CURRENT_STATUS_FK">
+            <End Role="STATUS" EntitySet="STATUS" />
+            <End Role="CURRENT_STATUS" EntitySet="CURRENT_STATUS" />
+          </AssociationSet>
+          <AssociationSet Name="MODEL_TYPE_FK" Association="Self.MODEL_TYPE_FK">
+            <End Role="TYPE" EntitySet="TYPE" />
+            <End Role="MODEL" EntitySet="MODEL" />
+          </AssociationSet>
+          <AssociationSet Name="PRICE_MODEL_FK" Association="Self.PRICE_MODEL_FK">
+            <End Role="MODEL" EntitySet="MODEL" />
+            <End Role="PRICE" EntitySet="PRICE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="COMPONENT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID_SERIES" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="ID_MODEL" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="ID_TYPE" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DATE_ADD" Type="DateTime" />
+          <Property Name="PARTNUMBER" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="AMOUNT" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="CURRENT_STATUS" Relationship="Self.COMPONENT_CURRENT_FK" FromRole="COMPONENT" ToRole="CURRENT_STATUS" />
+          <NavigationProperty Name="MODEL" Relationship="Self.COMPONENT_MODEL_FK" FromRole="COMPONENT" ToRole="MODEL" />
+          <NavigationProperty Name="TYPE" Relationship="Self.COMPONENT_TYPE_FK" FromRole="COMPONENT" ToRole="TYPE" />
+        </EntityType>
+        <EntityType Name="CURRENT_STATUS">
+          <Key>
+            <PropertyRef Name="ID_SERIES" />
+          </Key>
+          <Property Name="ID_SERIES" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID_STATUS" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="DATE_STATUS" Type="DateTime" />
+          <NavigationProperty Name="COMPONENT" Relationship="Self.COMPONENT_CURRENT_FK" FromRole="CURRENT_STATUS" ToRole="COMPONENT" />
+          <NavigationProperty Name="STATUS" Relationship="Self.CURRENT_STATUS_FK" FromRole="CURRENT_STATUS" ToRole="STATUS" />
+        </EntityType>
+        <EntityType Name="MODEL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ID_TYPE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="COMPONENT" Relationship="Self.COMPONENT_MODEL_FK" FromRole="MODEL" ToRole="COMPONENT" />
+          <NavigationProperty Name="TYPE" Relationship="Self.MODEL_TYPE_FK" FromRole="MODEL" ToRole="TYPE" />
+          <NavigationProperty Name="PRICE" Relationship="Self.PRICE_MODEL_FK" FromRole="MODEL" ToRole="PRICE" />
+        </EntityType>
+        <EntityType Name="PRICE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID_MODEL" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATE_ADD" Type="DateTime" />
+          <Property Name="PRICE1" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="MODEL" Relationship="Self.PRICE_MODEL_FK" FromRole="PRICE" ToRole="MODEL" />
+        </EntityType>
+        <EntityType Name="STATUS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CURRENT_STATUS" Relationship="Self.CURRENT_STATUS_FK" FromRole="STATUS" ToRole="CURRENT_STATUS" />
+        </EntityType>
+        <EntityType Name="TYPE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="COMPONENT" Relationship="Self.COMPONENT_TYPE_FK" FromRole="TYPE" ToRole="COMPONENT" />
+          <NavigationProperty Name="MODEL" Relationship="Self.MODEL_TYPE_FK" FromRole="TYPE" ToRole="MODEL" />
+        </EntityType>
+        <Association Name="COMPONENT_CURRENT_FK">
+          <End Role="CURRENT_STATUS" Type="Self.CURRENT_STATUS" Multiplicity="0..1" />
+          <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CURRENT_STATUS">
+              <PropertyRef Name="ID_SERIES" />
+            </Principal>
+            <Dependent Role="COMPONENT">
+              <PropertyRef Name="ID_SERIES" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="COMPONENT_MODEL_FK">
+          <End Role="MODEL" Type="Self.MODEL" Multiplicity="0..1" />
+          <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODEL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="COMPONENT">
+              <PropertyRef Name="ID_MODEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="COMPONENT_TYPE_FK">
+          <End Role="TYPE" Type="Self.TYPE" Multiplicity="0..1" />
+          <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="COMPONENT">
+              <PropertyRef Name="ID_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CURRENT_STATUS_FK">
+          <End Role="STATUS" Type="Self.STATUS" Multiplicity="0..1" />
+          <End Role="CURRENT_STATUS" Type="Self.CURRENT_STATUS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATUS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CURRENT_STATUS">
+              <PropertyRef Name="ID_STATUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MODEL_TYPE_FK">
+          <End Role="TYPE" Type="Self.TYPE" Multiplicity="1" />
+          <End Role="MODEL" Type="Self.MODEL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MODEL">
+              <PropertyRef Name="ID_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PRICE_MODEL_FK">
+          <End Role="MODEL" Type="Self.MODEL" Multiplicity="1" />
+          <End Role="PRICE" Type="Self.PRICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODEL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRICE">
+              <PropertyRef Name="ID_MODEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="COMPONENT" EntityType="Self.COMPONENT" />
+          <EntitySet Name="CURRENT_STATUS" EntityType="Self.CURRENT_STATUS" />
+          <EntitySet Name="MODEL" EntityType="Self.MODEL" />
+          <EntitySet Name="PRICE" EntityType="Self.PRICE" />
+          <EntitySet Name="STATUS" EntityType="Self.STATUS" />
+          <EntitySet Name="TYPE" EntityType="Self.TYPE" />
+          <AssociationSet Name="COMPONENT_CURRENT_FK" Association="Self.COMPONENT_CURRENT_FK">
+            <End Role="CURRENT_STATUS" EntitySet="CURRENT_STATUS" />
+            <End Role="COMPONENT" EntitySet="COMPONENT" />
+          </AssociationSet>
+          <AssociationSet Name="COMPONENT_MODEL_FK" Association="Self.COMPONENT_MODEL_FK">
+            <End Role="MODEL" EntitySet="MODEL" />
+            <End Role="COMPONENT" EntitySet="COMPONENT" />
+          </AssociationSet>
+          <AssociationSet Name="COMPONENT_TYPE_FK" Association="Self.COMPONENT_TYPE_FK">
+            <End Role="TYPE" EntitySet="TYPE" />
+            <End Role="COMPONENT" EntitySet="COMPONENT" />
+          </AssociationSet>
+          <AssociationSet Name="CURRENT_STATUS_FK" Association="Self.CURRENT_STATUS_FK">
+            <End Role="STATUS" EntitySet="STATUS" />
+            <End Role="CURRENT_STATUS" EntitySet="CURRENT_STATUS" />
+          </AssociationSet>
+          <AssociationSet Name="MODEL_TYPE_FK" Association="Self.MODEL_TYPE_FK">
+            <End Role="TYPE" EntitySet="TYPE" />
+            <End Role="MODEL" EntitySet="MODEL" />
+          </AssociationSet>
+          <AssociationSet Name="PRICE_MODEL_FK" Association="Self.PRICE_MODEL_FK">
+            <End Role="MODEL" EntitySet="MODEL" />
+            <End Role="PRICE" EntitySet="PRICE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="COMPONENT">
+            <EntityTypeMapping TypeName="Model.COMPONENT">
+              <MappingFragment StoreEntitySet="COMPONENT">
+                <ScalarProperty Name="ID_SERIES" ColumnName="ID_SERIES" />
+                <ScalarProperty Name="ID_MODEL" ColumnName="ID_MODEL" />
+                <ScalarProperty Name="ID_TYPE" ColumnName="ID_TYPE" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DATE_ADD" ColumnName="DATE_ADD" />
+                <ScalarProperty Name="PARTNUMBER" ColumnName="PARTNUMBER" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CURRENT_STATUS">
+            <EntityTypeMapping TypeName="Model.CURRENT_STATUS">
+              <MappingFragment StoreEntitySet="CURRENT_STATUS">
+                <ScalarProperty Name="ID_SERIES" ColumnName="ID_SERIES" />
+                <ScalarProperty Name="ID_STATUS" ColumnName="ID_STATUS" />
+                <ScalarProperty Name="DATE_STATUS" ColumnName="DATE_STATUS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MODEL">
+            <EntityTypeMapping TypeName="Model.MODEL">
+              <MappingFragment StoreEntitySet="MODEL">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="ID_TYPE" ColumnName="ID_TYPE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRICE">
+            <EntityTypeMapping TypeName="Model.PRICE">
+              <MappingFragment StoreEntitySet="PRICE">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_MODEL" ColumnName="ID_MODEL" />
+                <ScalarProperty Name="DATE_ADD" ColumnName="DATE_ADD" />
+                <ScalarProperty Name="PRICE1" ColumnName="PRICE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STATUS">
+            <EntityTypeMapping TypeName="Model.STATUS">
+              <MappingFragment StoreEntitySet="STATUS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TYPE">
+            <EntityTypeMapping TypeName="Model.TYPE">
+              <MappingFragment StoreEntitySet="TYPE">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
