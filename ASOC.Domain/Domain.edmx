@@ -15,14 +15,14 @@
           <Property Name="NAME" Type="varchar2" MaxLength="200" />
           <Property Name="DATE_ADD" Type="date" />
           <Property Name="PARTNUMBER" Type="varchar2" MaxLength="200" />
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="AMOUNT" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="CURRENT_STATUS">
           <Key>
             <PropertyRef Name="ID_SERIES" />
           </Key>
-          <Property Name="ID_SERIES" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID_SERIES" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ID_STATUS" Type="number" Precision="38" Scale="0" />
           <Property Name="DATE_STATUS" Type="date" />
         </EntityType>
@@ -30,7 +30,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="NAME" Type="varchar2" MaxLength="200" />
           <Property Name="ID_TYPE" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
@@ -38,7 +38,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ID_MODEL" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATE_ADD" Type="date" />
           <Property Name="PRICE" Type="float" Precision="126" Scale="0" Nullable="false" />
@@ -47,14 +47,14 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="NAME" Type="varchar2" MaxLength="20" />
         </EntityType>
         <EntityType Name="TYPE">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="NAME" Type="varchar2" MaxLength="200" />
         </EntityType>
         <Association Name="COMPONENT_CURRENT_FK">
@@ -176,7 +176,7 @@
           <Property Name="NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="DATE_ADD" Type="DateTime" />
           <Property Name="PARTNUMBER" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AMOUNT" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="CURRENT_STATUS" Relationship="Self.COMPONENT_CURRENT_FK" FromRole="COMPONENT" ToRole="CURRENT_STATUS" />
           <NavigationProperty Name="MODEL" Relationship="Self.COMPONENT_MODEL_FK" FromRole="COMPONENT" ToRole="MODEL" />
@@ -186,7 +186,7 @@
           <Key>
             <PropertyRef Name="ID_SERIES" />
           </Key>
-          <Property Name="ID_SERIES" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID_SERIES" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_STATUS" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="DATE_STATUS" Type="DateTime" />
           <NavigationProperty Name="COMPONENT" Relationship="Self.COMPONENT_CURRENT_FK" FromRole="CURRENT_STATUS" ToRole="COMPONENT" />
@@ -196,7 +196,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="ID_TYPE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="COMPONENT" Relationship="Self.COMPONENT_MODEL_FK" FromRole="MODEL" ToRole="COMPONENT" />
@@ -207,7 +207,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_MODEL" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATE_ADD" Type="DateTime" />
           <Property Name="PRICE1" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -217,7 +217,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CURRENT_STATUS" Relationship="Self.CURRENT_STATUS_FK" FromRole="STATUS" ToRole="CURRENT_STATUS" />
         </EntityType>
@@ -225,7 +225,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="COMPONENT" Relationship="Self.COMPONENT_TYPE_FK" FromRole="TYPE" ToRole="COMPONENT" />
           <NavigationProperty Name="MODEL" Relationship="Self.MODEL_TYPE_FK" FromRole="TYPE" ToRole="MODEL" />

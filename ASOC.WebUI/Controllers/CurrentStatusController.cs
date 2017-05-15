@@ -59,7 +59,7 @@ namespace ASOC.WebUI.Controllers
             {
                 return HttpNotFound();
             }
-            CURRENT_STATUS currentStatus = currentStatusRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(id));
+            CURRENT_STATUS currentStatus = currentStatusRepository.GetAllList().FirstOrDefault(x => x.ID_STATUS.Equals(id));
             if (currentStatus == null)
             {
                 return HttpNotFound();

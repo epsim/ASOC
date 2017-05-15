@@ -20,25 +20,25 @@ namespace ASOC.WebUI.Controllers
         // GET: Role
         public ActionResult Index()
         {
-            var model = statusRepository.GetAllList();
+            IEnumerable<STATUS> model = statusRepository.GetAllList();
             return View(model);
         }
 
         // GET: Delete
         public ActionResult Delete(int? id)
         {
-
             if (id == null)
             {
                 return HttpNotFound();
             }
 
-            STATUS status = statusRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(id));
+            STATUS status = statusRepository.GetAllList().First(x => x.ID.Equals(Convert.ToDecimal(id)));
 
             if (status == null)
             {
                 return HttpNotFound();
             }
+
             return View(status);
         }
 
@@ -54,18 +54,18 @@ namespace ASOC.WebUI.Controllers
         // Get: Edit
         public ActionResult Edit(int? id)
         {
-
             if (id == null)
             {
                 return HttpNotFound();
             }
-            STATUS status = statusRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(id));
+
+            STATUS status = statusRepository.GetAllList().First(x => x.ID.Equals(Convert.ToDecimal(id)));
+
             if (status == null)
             {
                 return HttpNotFound();
             }
             return View(status);
-
         }
 
         // POST: Edit              

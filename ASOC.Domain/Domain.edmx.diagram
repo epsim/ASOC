@@ -4,12 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="cdf7667087e04d038e651083434e9569" Name="Diagram1">
-        <EntityTypeShape EntityType="Model.COMPONENT" Width="1.5" PointX="5.25" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.CURRENT_STATUS" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+      <Diagram DiagramId="27c5e81f986f4424a52433cfc16b0881" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.COMPONENT" Width="1.5" PointX="5.25" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.CURRENT_STATUS" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.MODEL" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.PRICE" Width="1.5" PointX="5.25" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.STATUS" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.STATUS" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.TYPE" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <AssociationConnector Association="Model.COMPONENT_CURRENT_FK" ManuallyRouted="false" />
         <AssociationConnector Association="Model.COMPONENT_MODEL_FK" ManuallyRouted="false" />
