@@ -287,6 +287,10 @@
     <Content Include="Views\Status\Delete.cshtml" />
     <Content Include="Views\Status\Edit.cshtml" />
     <Content Include="Views\Status\Create.cshtml" />
+    <Content Include="Views\Type\Index.cshtml" />
+    <Content Include="Views\Type\Delete.cshtml" />
+    <Content Include="Views\Type\Edit.cshtml" />
+    <Content Include="Views\Type\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -295,7 +299,6 @@
     <Folder Include="Views\CurrentStatus\" />
     <Folder Include="Views\Model\" />
     <Folder Include="Views\Price\" />
-    <Folder Include="Views\Type\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

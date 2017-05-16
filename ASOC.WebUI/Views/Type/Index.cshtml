@@ -1,0 +1,30 @@
+﻿@model IEnumerable<ASOC.Domain.TYPE>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Типы</h2>
+@Html.ActionLink("Создать", "Create")
+<table class="table">
+    <tr>
+        <th>
+            Тип
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NAME)
+            </td>
+            <td>
+                @Html.ActionLink("Изменить", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>

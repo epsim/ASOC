@@ -33,7 +33,7 @@ namespace ASOC.WebUI.Controllers
                 return HttpNotFound();
             }
 
-            TYPE type = typeRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(id));
+            TYPE type = typeRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(Convert.ToDecimal(id)));
 
             if (type == null)
             {
@@ -53,13 +53,12 @@ namespace ASOC.WebUI.Controllers
 
         // Get: Edit
         public ActionResult Edit(int? id)
-        {
-          
+        {          
             if (id == null)
             {
                 return HttpNotFound();
             }
-            TYPE type = typeRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(id));
+            TYPE type = typeRepository.GetAllList().First(x => x.ID.Equals(Convert.ToDecimal(id)));
             if (type == null)
             {
                 return HttpNotFound();
