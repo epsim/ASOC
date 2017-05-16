@@ -17,11 +17,17 @@ namespace ASOC.WebUI.Controllers
             typeRepository = typeRepositoryParam;
         }
 
-        // GET: Role
-        public ActionResult Index()
-        {            
-                var model = typeRepository.GetAllList();
-                return View(model);                        
+        // GET: Index
+        public ActionResult Index(string filter = null)
+        {
+            ViewBag.filter = filter;
+            return View(GetTypes(filter));                        
+        }
+
+        public IEnumerable<TYPE> GetTypes(string filter)
+        {
+            IEnumerable<TYPE> type = typeRepository.GetAllList();            
+            return filter == null ? type : type.Where(x => x.NAME.Contains(filter));
         }
 
         // GET: Delete

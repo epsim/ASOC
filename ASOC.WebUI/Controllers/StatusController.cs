@@ -17,11 +17,17 @@ namespace ASOC.WebUI.Controllers
             statusRepository = statusRepositoryParam;
         }
 
-        // GET: Role
-        public ActionResult Index()
+        // GET: Index
+        public ActionResult Index(string filter = null)
         {
-            IEnumerable<STATUS> model = statusRepository.GetAllList();
-            return View(model);
+            ViewBag.filter = filter;
+            return View(GetStatuses(filter));
+        }      
+
+        public IEnumerable<STATUS> GetStatuses(string filter)
+        {           
+            IEnumerable<STATUS> status = statusRepository.GetAllList();           
+            return filter == null ? status : status.Where(x => x.NAME.Contains(filter));
         }
 
         // GET: Delete

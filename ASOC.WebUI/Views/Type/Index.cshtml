@@ -7,6 +7,17 @@
 
 <h2>Типы</h2>
 @Html.ActionLink("Создать", "Create")
+@using (Html.BeginForm())
+{
+    <div class="row" id="find">
+        <div class="col-sm-3 input-group">
+            <input type="text" name="filter" value="@ViewBag.filter" class="form-control" placeholder="Введите текст для поиска..." />
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-default">Найти</button>
+            </span>
+        </div>
+    </div>
+}
 <table class="table">
     <tr>
         <th>
