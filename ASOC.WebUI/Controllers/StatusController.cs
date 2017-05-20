@@ -1,5 +1,6 @@
 ﻿using ASOC.Domain;
 using ASOC.WebUI.Infrastructure.Interfaces;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,19 +17,33 @@ namespace ASOC.WebUI.Controllers
         {
             statusRepository = statusRepositoryParam;
         }
-
-        // GET: Index
-        public ActionResult Index(string filter = null)
+                
+        // GET: Index                  
+        public ActionResult Index(int? page, string currentFilter, string searchString)
         {
-            ViewBag.filter = filter;
-            return View(GetStatuses(filter));
-        }      
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
 
-        public IEnumerable<STATUS> GetStatuses(string filter)
-        {           
-            IEnumerable<STATUS> status = statusRepository.GetAllList();           
-            return filter == null ? status : status.Where(x => x.NAME.Contains(filter));
-        }
+            ViewBag.CurrentFilter = searchString;
+
+            var statuses = statusRepository.GetAllList();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                statuses = statuses.Where(s => s.NAME.Contains(searchString)).OrderBy(s => s.NAME);
+            }
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            return View(statuses.ToPagedList(pageNumber, pageSize)); 
+        }        
 
         // GET: Delete
         public ActionResult Delete(int? id)

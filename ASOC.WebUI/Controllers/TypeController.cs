@@ -1,5 +1,6 @@
 ﻿using ASOC.Domain;
 using ASOC.WebUI.Infrastructure.Interfaces;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,19 +17,33 @@ namespace ASOC.WebUI.Controllers
         {
             typeRepository = typeRepositoryParam;
         }
-
-        // GET: Index
-        public ActionResult Index(string filter = null)
+              
+        // GET: Index                  
+        public ActionResult Index(int? page, string currentFilter, string searchString)
         {
-            ViewBag.filter = filter;
-            return View(GetTypes(filter));                        
-        }
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
 
-        public IEnumerable<TYPE> GetTypes(string filter)
-        {
-            IEnumerable<TYPE> type = typeRepository.GetAllList();            
-            return filter == null ? type : type.Where(x => x.NAME.Contains(filter));
-        }
+            ViewBag.CurrentFilter = searchString;
+
+            var types = typeRepository.GetAllList();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                types = types.Where(s => s.NAME.Contains(searchString)).OrderBy(s => s.NAME);
+            }
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            return View(types.ToPagedList(pageNumber, pageSize));
+        }     
 
         // GET: Delete
         public ActionResult Delete(int? id)
