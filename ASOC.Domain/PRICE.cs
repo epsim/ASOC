@@ -16,8 +16,8 @@ namespace ASOC.Domain
     {
         public decimal ID { get; set; }
         public decimal ID_MODEL { get; set; }
-        public Nullable<System.DateTime> DATE_ADD { get; set; }
-        public decimal PRICE1 { get; set; }
+        public System.DateTime DATE_ADD { get; set; }
+        public decimal COAST { get; set; }
     
         public virtual MODEL MODEL { get; set; }
     }

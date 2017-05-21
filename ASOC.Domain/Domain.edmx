@@ -40,8 +40,8 @@
           </Key>
           <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ID_MODEL" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATE_ADD" Type="date" />
-          <Property Name="PRICE" Type="float" Precision="126" Scale="0" Nullable="false" />
+          <Property Name="DATE_ADD" Type="date" Nullable="false" />
+          <Property Name="COAST" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="STATUS">
           <Key>
@@ -117,7 +117,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="PRICE_MODEL_FK">
+        <Association Name="PRICE_FK1">
           <End Role="MODEL" Type="Self.MODEL" Multiplicity="1" />
           <End Role="PRICE" Type="Self.PRICE" Multiplicity="*" />
           <ReferentialConstraint>
@@ -156,7 +156,7 @@
             <End Role="TYPE" EntitySet="TYPE" />
             <End Role="MODEL" EntitySet="MODEL" />
           </AssociationSet>
-          <AssociationSet Name="PRICE_MODEL_FK" Association="Self.PRICE_MODEL_FK">
+          <AssociationSet Name="PRICE_FK1" Association="Self.PRICE_FK1">
             <End Role="MODEL" EntitySet="MODEL" />
             <End Role="PRICE" EntitySet="PRICE" />
           </AssociationSet>
@@ -201,7 +201,7 @@
           <Property Name="ID_TYPE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="COMPONENT" Relationship="Self.COMPONENT_MODEL_FK" FromRole="MODEL" ToRole="COMPONENT" />
           <NavigationProperty Name="TYPE" Relationship="Self.MODEL_TYPE_FK" FromRole="MODEL" ToRole="TYPE" />
-          <NavigationProperty Name="PRICE" Relationship="Self.PRICE_MODEL_FK" FromRole="MODEL" ToRole="PRICE" />
+          <NavigationProperty Name="PRICE" Relationship="Self.PRICE_FK1" FromRole="MODEL" ToRole="PRICE" />
         </EntityType>
         <EntityType Name="PRICE">
           <Key>
@@ -209,9 +209,9 @@
           </Key>
           <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_MODEL" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATE_ADD" Type="DateTime" />
-          <Property Name="PRICE1" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="MODEL" Relationship="Self.PRICE_MODEL_FK" FromRole="PRICE" ToRole="MODEL" />
+          <Property Name="DATE_ADD" Type="DateTime" Nullable="false" />
+          <Property Name="COAST" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="MODEL" Relationship="Self.PRICE_FK1" FromRole="PRICE" ToRole="MODEL" />
         </EntityType>
         <EntityType Name="STATUS">
           <Key>
@@ -290,7 +290,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="PRICE_MODEL_FK">
+        <Association Name="PRICE_FK1">
           <End Role="MODEL" Type="Self.MODEL" Multiplicity="1" />
           <End Role="PRICE" Type="Self.PRICE" Multiplicity="*" />
           <ReferentialConstraint>
@@ -329,7 +329,7 @@
             <End Role="TYPE" EntitySet="TYPE" />
             <End Role="MODEL" EntitySet="MODEL" />
           </AssociationSet>
-          <AssociationSet Name="PRICE_MODEL_FK" Association="Self.PRICE_MODEL_FK">
+          <AssociationSet Name="PRICE_FK1" Association="Self.PRICE_FK1">
             <End Role="MODEL" EntitySet="MODEL" />
             <End Role="PRICE" EntitySet="PRICE" />
           </AssociationSet>
@@ -378,7 +378,7 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ID_MODEL" ColumnName="ID_MODEL" />
                 <ScalarProperty Name="DATE_ADD" ColumnName="DATE_ADD" />
-                <ScalarProperty Name="PRICE1" ColumnName="PRICE" />
+                <ScalarProperty Name="COAST" ColumnName="COAST" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
