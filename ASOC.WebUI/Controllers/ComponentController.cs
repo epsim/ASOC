@@ -1,5 +1,6 @@
 ﻿using ASOC.Domain;
 using ASOC.WebUI.Infrastructure.Interfaces;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,32 @@ namespace ASOC.WebUI.Controllers
         {
             componentRepository = componentRepositoryParam;
         }
-
-        // GET: Role
-        public ActionResult Index()
+ 
+        // GET: Index                  
+        public ActionResult Index(int? page, string currentFilter, string searchString)
         {
-            var model = componentRepository.GetAllList();
-            return View(model);
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            var components = componentRepository.GetAllList();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                components = components.Where(s => s.NAME.Contains(searchString)).OrderBy(s => s.NAME);
+            }
+                                 
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            return View(components.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Delete
@@ -39,6 +60,17 @@ namespace ASOC.WebUI.Controllers
             {
                 return HttpNotFound();
             }
+            return View(component);
+        }
+
+        // GET: Details 
+        public ActionResult Details(decimal? id)
+        {
+            if(id == null)
+            {
+                return HttpNotFound();
+            }
+            var component = componentRepository.GetAllList().Where(x => x.ID.Equals(id));
             return View(component);
         }
 

@@ -9,6 +9,6 @@ namespace ASOC.WebUI.Infrastructure.Interfaces
 {
     public interface IGetList
     {
-        SelectList GetSomeSelectList();
+        SelectList getTypeSelectList();
     }
 }

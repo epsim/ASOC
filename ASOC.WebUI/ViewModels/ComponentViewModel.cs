@@ -8,5 +8,7 @@ namespace ASOC.WebUI.ViewModels
 {
     public class ComponentViewModel: COMPONENT
     {
+        public decimal COAST { get; set; }
+        public int STATUS { get; set; }
     }
 }

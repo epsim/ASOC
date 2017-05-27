@@ -1,19 +1,22 @@
 ﻿@using PagedList.Mvc
-@model PagedList.IPagedList<ASOC.Domain.STATUS>
+@model ASOC.WebUI.ViewModels.ModelViewModel
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Статусы</h2>
+<h2>Модели</h2>
 <p> @Html.ActionLink("Создать", "Create") </p>
 
-@using (Html.BeginForm("Index", "Status", FormMethod.Get))
+@using (Html.BeginForm("Index", "Model", FormMethod.Get))
 {
     <div class="row" id="find">
+        <div class="col-sm-3">
+            @Html.DropDownListFor(model => model.ID_TYPE, Model.typeList, "Выберите тип", htmlAttributes: new { @class = "form-control" })
+        </div>
         <div class="col-sm-3 input-group">
-            @Html.Editor("SearchString",ViewBag.CurrentFilter as string, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.searchString, Model.currentFilter, new { htmlAttributes = new { @class = "form-control" } })
             <span class="input-group-btn">
                 <button type="submit" class="btn btn-default">Найти</button>
             </span>
@@ -23,15 +26,21 @@
 <table class="table">
     <tr>
         <th>
-            Статус
+            Модель
+        </th>
+        <th>
+            Тип
         </th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.modelList)
     {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TYPE.NAME)
             </td>
             <td>
                 @Html.ActionLink("Изменить", "Edit", new { id = item.ID }) |
@@ -41,5 +50,5 @@
     }
 </table>
 
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, currentFilter = ViewBag.CurrentFilter }))
+@Html.PagedListPager(Model.modelList, page => Url.Action("Index",
+    new { page, currentFilter = Model.currentFilter, ID_TYPE = Model.ID_TYPE }))

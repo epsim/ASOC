@@ -1,5 +1,7 @@
 ﻿using ASOC.Domain;
 using ASOC.WebUI.Infrastructure.Interfaces;
+using ASOC.WebUI.ViewModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,18 +13,56 @@ namespace ASOC.WebUI.Controllers
     public class ModelController : Controller
     {
         IRepository<MODEL> modelRepository;
+        IGetList getList;
+        IRepository<TYPE> typeRepository;
 
-        public ModelController(IRepository<MODEL> modelRepositoryParam)
+        public ModelController(IRepository<MODEL> modelRepositoryParam, IGetList getListParam,
+            IRepository<TYPE> typeRepositoryParam)
         {
             modelRepository = modelRepositoryParam;
+            getList = getListParam;
+            typeRepository = typeRepositoryParam;
         }
 
         // GET: Role
-        public ActionResult Index()
+        public ActionResult Index(int? page, ModelViewModel modelData)
         {
-            var model = modelRepository.GetAllList();
+            if (modelData.searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                modelData.ID_TYPE = modelData.ID_TYPE;               
+            }
+
+            modelData.currentFilter = modelData.searchString;
+
+            var models = modelRepository.GetAllList();
+
+            if (!String.IsNullOrEmpty(modelData.searchString))
+            {
+                models = models.Where(s => s.NAME.Contains(modelData.searchString)).OrderBy(s => s.NAME);
+            }
+
+            if(modelData.ID_TYPE!=0)
+            {
+                var type = typeRepository.GetAllList().First(m => m.ID.Equals(modelData.ID_TYPE)); 
+                models = models.Where(s => s.TYPE.NAME.Contains(type.NAME)).OrderBy(s => s.NAME);
+            }
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            ModelViewModel model = new ModelViewModel
+            {
+                modelList = models.ToPagedList(pageNumber, pageSize),
+                typeList = getList.getTypeSelectList(),
+                searchString = modelData.searchString,
+                currentFilter = modelData.currentFilter,
+                ID_TYPE = modelData.ID_TYPE
+            };           
             return View(model);
-        }
+        }    
 
         // GET: Delete
         public ActionResult Delete(int? id)
@@ -33,13 +73,14 @@ namespace ASOC.WebUI.Controllers
                 return HttpNotFound();
             }
 
-            MODEL model = modelRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(id));
+            MODEL status = modelRepository.GetAllList().First(x => x.ID.Equals(Convert.ToDecimal(id)));
 
-            if (model == null)
+            if (status == null)
             {
                 return HttpNotFound();
             }
-            return View(model);
+
+            return View(status);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -59,45 +100,67 @@ namespace ASOC.WebUI.Controllers
             {
                 return HttpNotFound();
             }
-            MODEL model = modelRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(id));
+            MODEL model = modelRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(Convert.ToDecimal(id)));
             if (model == null)
             {
                 return HttpNotFound();
             }
-            return View(model);
 
+            ModelViewModel modelData = new ModelViewModel()
+            {
+                ID = model.ID,
+                ID_TYPE = model.ID_TYPE,
+                NAME = model.NAME,
+                typeList = getList.getTypeSelectList()
+            };
+            return View(modelData);
         }
 
         // POST: Edit              
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(MODEL model)
+        public ActionResult Edit(ModelViewModel modelData)
         {
             if (ModelState.IsValid)
             {
+                var model = new MODEL()
+                {
+                    ID = modelData.ID,
+                    ID_TYPE = modelData.ID_TYPE,
+                    NAME = modelData.NAME
+                };
                 modelRepository.Update(model);
                 modelRepository.Save();
                 return RedirectToAction("Index");
             }
-            return View(model);
+            return View(modelData);
         }
 
         // Get: Create
         public ActionResult Create()
         {
-            return View();
+            ModelViewModel modelData = new ModelViewModel()
+            {               
+                typeList = getList.getTypeSelectList()
+            };
+            return View(modelData);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(MODEL model)
+        public ActionResult Create(ModelViewModel modelData)
         {
             if (ModelState.IsValid)
             {
+                MODEL model = new MODEL()
+                {
+                    ID_TYPE = modelData.ID_TYPE,
+                    NAME = modelData.NAME
+                };
                 modelRepository.Create(model);
                 modelRepository.Save();
                 return RedirectToAction("Index");
             }
-            return View(model);
+            return View(modelData);
         }
     }
 }

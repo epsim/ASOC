@@ -11,9 +11,9 @@ namespace ASOC.WebUI.Infrastructure.Concrete
     public class GetList : IGetList
     {
         private Entities db = new Entities();
-        public SelectList GetSomeSelectList()
+        public SelectList getTypeSelectList()
         {
-            return new SelectList(db.MODEL, "id","name");
+            return new SelectList(db.TYPE, "id","name");
         }
     }
 }

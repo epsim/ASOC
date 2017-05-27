@@ -42,4 +42,4 @@
 </table>
 
 @Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    new { page, currentFilter = ViewBag.CurrentFilter }))

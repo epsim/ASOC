@@ -301,12 +301,18 @@
     <Content Include="Views\Type\Edit.cshtml" />
     <Content Include="Views\Type\Create.cshtml" />
     <Content Include="Views\Component\Index.cshtml" />
+    <Content Include="Views\Component\Delete.cshtml" />
+    <Content Include="Views\Component\Edit.cshtml" />
+    <Content Include="Views\Component\Create.cshtml" />
+    <Content Include="Views\Model\Index.cshtml" />
+    <Content Include="Views\Model\Delete.cshtml" />
+    <Content Include="Views\Model\Edit.cshtml" />
+    <Content Include="Views\Model\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Infrastructure\Binders\" />
     <Folder Include="Views\CurrentStatus\" />
-    <Folder Include="Views\Model\" />
     <Folder Include="Views\Price\" />
   </ItemGroup>
   <ItemGroup>
