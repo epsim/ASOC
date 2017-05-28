@@ -49,13 +49,34 @@ namespace ASOC.WebUI.Controllers
             {
                 var type = typeRepository.GetAllList().First(m => m.ID.Equals(modelData.ID_TYPE)); 
                 models = models.Where(s => s.TYPE.NAME.Contains(type.NAME)).OrderBy(s => s.NAME);
-            }
+            }            
 
             int pageSize = 10;
             int pageNumber = (page ?? 1);
+
+            List<ModelViewModel> modelList = new List<ModelViewModel>();
+
+            foreach (MODEL item in models)
+            {
+                decimal coastFind;
+                try
+                {
+                    coastFind = item.PRICE.Where(x => x.ID_MODEL.Equals(item.ID))
+                        .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST;
+                }
+                catch (NullReferenceException)
+                {
+                    coastFind = 0;                    
+                }           
+                modelList.Add(new ModelViewModel() { COMPONENT = item.COMPONENT,
+                    ID = item.ID, ID_TYPE = item.ID_TYPE, NAME = item.NAME, PRICE = item.PRICE,
+                    TYPE = item.TYPE, currentCoast = coastFind                                       
+                });
+            }
+         
             ModelViewModel model = new ModelViewModel
             {
-                modelList = models.ToPagedList(pageNumber, pageSize),
+                modelList = modelList.ToPagedList(pageNumber, pageSize),
                 typeList = getList.getTypeSelectList(),
                 searchString = modelData.searchString,
                 currentFilter = modelData.currentFilter,

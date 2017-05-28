@@ -31,6 +31,9 @@
         <th>
             Тип
         </th>
+        <th>
+            Текущая цена
+        </th>  
     </tr>
 
     @foreach (var item in Model.modelList)
@@ -42,6 +45,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TYPE.NAME)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.currentCoast)
+            </td>            
             <td>
                 @Html.ActionLink("Изменить", "Edit", new { id = item.ID }) |
                 @Html.ActionLink("Удалить", "Delete", new { id = item.ID })
