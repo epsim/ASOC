@@ -15,13 +15,15 @@ namespace ASOC.WebUI.Controllers
         IRepository<MODEL> modelRepository;
         IGetList getList;
         IRepository<TYPE> typeRepository;
+        IRepository<PRICE> priceRepository;
 
         public ModelController(IRepository<MODEL> modelRepositoryParam, IGetList getListParam,
-            IRepository<TYPE> typeRepositoryParam)
+            IRepository<TYPE> typeRepositoryParam, IRepository<PRICE> priceRepositoryParam)
         {
             modelRepository = modelRepositoryParam;
             getList = getListParam;
             typeRepository = typeRepositoryParam;
+            priceRepository = priceRepositoryParam;
         }
 
         // GET: Role
@@ -57,23 +59,13 @@ namespace ASOC.WebUI.Controllers
             List<ModelViewModel> modelList = new List<ModelViewModel>();
 
             foreach (MODEL item in models)
-            {
-                decimal coastFind;
-                try
-                {
-                    coastFind = item.PRICE.Where(x => x.ID_MODEL.Equals(item.ID))
-                        .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST;
-                }
-                catch (NullReferenceException)
-                {
-                    coastFind = 0;                    
-                }           
+            {                     
                 modelList.Add(new ModelViewModel() { COMPONENT = item.COMPONENT,
                     ID = item.ID, ID_TYPE = item.ID_TYPE, NAME = item.NAME, PRICE = item.PRICE,
-                    TYPE = item.TYPE, currentCoast = coastFind                                       
-                });
+                    TYPE = item.TYPE, currentCoast = item.PRICE.Where(x => x.ID_MODEL.Equals(item.ID))
+                        .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST });
             }
-         
+                     
             ModelViewModel model = new ModelViewModel
             {
                 modelList = modelList.ToPagedList(pageNumber, pageSize),
@@ -107,7 +99,7 @@ namespace ASOC.WebUI.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
-        {
+        {           
             modelRepository.Delete(id);
             modelRepository.Save();
             return RedirectToAction("Index");
@@ -132,7 +124,9 @@ namespace ASOC.WebUI.Controllers
                 ID = model.ID,
                 ID_TYPE = model.ID_TYPE,
                 NAME = model.NAME,
-                typeList = getList.getTypeSelectList()
+                typeList = getList.getTypeSelectList(),
+                currentCoast = model.PRICE.Where(x => x.ID_MODEL.Equals(model.ID))
+                        .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST
             };
             return View(modelData);
         }
@@ -144,14 +138,24 @@ namespace ASOC.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var model = new MODEL()
+                MODEL model = new MODEL()
                 {
                     ID = modelData.ID,
                     ID_TYPE = modelData.ID_TYPE,
                     NAME = modelData.NAME
                 };
-                modelRepository.Update(model);
-                modelRepository.Save();
+                PRICE price = new PRICE()
+                {
+                    COAST = Convert.ToDecimal(modelData.currentCoast),
+                    ID_MODEL = Convert.ToDecimal(modelData.ID),
+                    DATE_ADD = DateTime.Now
+                };
+
+                    modelRepository.Update(model);
+                    modelRepository.Save();
+                    priceRepository.Create(price);                    
+                    priceRepository.Save();   
+                             
                 return RedirectToAction("Index");
             }
             return View(modelData);
@@ -177,8 +181,27 @@ namespace ASOC.WebUI.Controllers
                     ID_TYPE = modelData.ID_TYPE,
                     NAME = modelData.NAME
                 };
-                modelRepository.Create(model);
-                modelRepository.Save();
+                IEnumerable<MODEL> sameModel = modelRepository.GetAllList().Where(x => x.NAME.Equals(modelData.NAME) 
+                                                && x.ID_TYPE.Equals(modelData.ID_TYPE));
+                if (sameModel != null)
+                {
+                    modelRepository.Create(model);
+                    modelRepository.Save();
+                }
+                else
+                    return HttpNotFound();
+
+                MODEL modelFind = modelRepository.GetAllList().Where(x => x.NAME.Equals(modelData.NAME)
+                                                && x.ID_TYPE.Equals(modelData.ID_TYPE)).First();
+                PRICE price = new PRICE()
+                {
+                    COAST = Convert.ToDecimal(modelData.currentCoast),
+                    ID_MODEL = Convert.ToDecimal(modelFind.ID),
+                    DATE_ADD = DateTime.Now
+                };             
+                priceRepository.Create(price);
+                priceRepository.Save();
+
                 return RedirectToAction("Index");
             }
             return View(modelData);

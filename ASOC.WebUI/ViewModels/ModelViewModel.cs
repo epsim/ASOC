@@ -15,6 +15,6 @@ namespace ASOC.WebUI.ViewModels
         public string searchString { get; set; }
         public string currentFilter { get; set; }
         public int currentType { get; set; }
-        public Nullable<decimal> currentCoast { get; set; }
+        public decimal currentCoast { get; set; }
     }
 }
