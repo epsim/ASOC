@@ -1,19 +1,24 @@
 ﻿@using PagedList.Mvc
-@model PagedList.IPagedList<ASOC.WebUI.ViewModels.PriceViewModel>
+@model ASOC.WebUI.ViewModels.PriceViewModel
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Цена</h2>
-<p> @Html.ActionLink("Создать", "Create") </p>
+<h2>Таблица изменения цен</h2>
 
 @using (Html.BeginForm("Index", "Price", FormMethod.Get))
 {
     <div class="row" id="find">
+        <div class="col-sm-3">
+            @Html.TextBoxFor(m => m.firstDate, new { @id = "Date", @type = "date", @class = "form-control" })
+        </div>
+        <div class="col-sm-3">
+            @Html.TextBoxFor(m => m.secondDate, new { @id = "Date", @type = "date", @class = "form-control" })
+        </div>
         <div class="col-sm-3 input-group">
-            @Html.Editor("SearchString", ViewBag.CurrentFilter as string, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.searchString, Model.currentFilter, new { htmlAttributes = new { @class = "form-control" } })
             <span class="input-group-btn">
                 <button type="submit" class="btn btn-default">Найти</button>
             </span>
@@ -23,23 +28,34 @@
 <table class="table">
     <tr>
         <th>
+            Модель
+        </th>
+        <th>
             Цена
+        </th>
+        <th>
+            Дата
         </th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.priceList)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.NAME)
+                @Html.DisplayFor(modelItem => item.MODEL.NAME)
             </td>
             <td>
-                @Html.ActionLink("Изменить", "Edit", new { id = item.ID }) |
+                @Html.DisplayFor(modelItem => item.COAST)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DATE_ADD)
+            </td>
+            <td>               
                 @Html.ActionLink("Удалить", "Delete", new { id = item.ID })
             </td>
         </tr>
     }
 </table>
 
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, currentFilter = ViewBag.CurrentFilter }))
+@Html.PagedListPager(Model.priceList, page => Url.Action("Index",
+    new { page, currentFilter =  Model.currentFilter }))

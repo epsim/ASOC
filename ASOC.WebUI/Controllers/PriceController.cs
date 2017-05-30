@@ -1,5 +1,7 @@
 ﻿using ASOC.Domain;
 using ASOC.WebUI.Infrastructure.Interfaces;
+using ASOC.WebUI.ViewModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +19,55 @@ namespace ASOC.WebUI.Controllers
             priceRepository = priceRepositoryParam;
         }
 
-        // GET: Role
-        public ActionResult Index()
+        // GET: Index
+        public ActionResult Index(int? page, PriceViewModel modelData)
         {
-            var model = priceRepository.GetAllList();
+            if (modelData.searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                modelData.searchString = modelData.currentFilter;
+            }
+
+            modelData.currentFilter = modelData.searchString;
+
+            IEnumerable<PRICE> priceLog = priceRepository.GetAllList();           
+
+            if (!String.IsNullOrEmpty(modelData.searchString))
+            {
+                decimal searchDigit;
+                bool isInt = Decimal.TryParse(modelData.searchString, out searchDigit);
+
+                if (isInt)
+                {
+                    priceLog = priceLog.Where(s => s.COAST.Equals(searchDigit)).
+                        OrderBy(s => s.DATE_ADD);
+                }
+                else                
+                {
+                    priceLog = priceLog.Where(s => s.MODEL.NAME.Contains(modelData.searchString)).
+                        OrderBy(s => s.DATE_ADD);
+                }
+            }
+
+            if (modelData.firstDate != null)
+                priceLog = priceLog.Where(x => x.DATE_ADD >= modelData.firstDate);
+            if (modelData.secondDate != null)
+                priceLog = priceLog.Where(x => x.DATE_ADD <= modelData.secondDate);
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            PriceViewModel model = new PriceViewModel()
+            {
+                priceList = priceLog.ToPagedList(pageNumber, pageSize),
+                currentFilter = modelData.currentFilter, 
+                searchString = modelData.searchString,
+                firstDate = modelData.firstDate,
+                secondDate = modelData.secondDate
+            };
             return View(model);
         }
 
@@ -49,54 +96,6 @@ namespace ASOC.WebUI.Controllers
             priceRepository.Delete(id);
             priceRepository.Save();
             return RedirectToAction("Index");
-        }
-
-        // Get: Edit
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return HttpNotFound();
-            }
-            PRICE price = priceRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(id));
-            if (price == null)
-            {
-                return HttpNotFound();
-            }
-            return View(price);
-
-        }
-
-        // POST: Edit              
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(PRICE price)
-        {
-            if (ModelState.IsValid)
-            {
-                priceRepository.Update(price);
-                priceRepository.Save();
-                return RedirectToAction("Index");
-            }
-            return View(price);
-        }
-
-        // Get: Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(PRICE price)
-        {
-            if (ModelState.IsValid)
-            {
-                priceRepository.Create(price);
-                priceRepository.Save();
-                return RedirectToAction("Index");
-            }
-            return View(price);
-        }
+        }        
     }
 }

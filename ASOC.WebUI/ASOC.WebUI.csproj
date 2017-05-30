@@ -309,8 +309,6 @@
     <Content Include="Views\Model\Edit.cshtml" />
     <Content Include="Views\Model\Create.cshtml" />
     <Content Include="Views\Price\Delete.cshtml" />
-    <Content Include="Views\Price\Edit.cshtml" />
-    <Content Include="Views\Price\Create.cshtml" />
     <Content Include="Views\Price\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
