@@ -108,25 +108,30 @@ namespace ASOC.WebUI.Controllers
         // Get: Edit
         public ActionResult Edit(int? id)
         {
-
             if (id == null)
             {
                 return HttpNotFound();
             }
-            MODEL model = modelRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(Convert.ToDecimal(id)));
+
+            MODEL model = modelRepository.GetAllList().
+                FirstOrDefault(x => x.ID.Equals(Convert.ToDecimal(id)));
+           
             if (model == null)
             {
                 return HttpNotFound();
             }
+
+            decimal coast = model.PRICE.Where(x => x.ID_MODEL.Equals(model.ID))
+                       .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST;
 
             ModelViewModel modelData = new ModelViewModel()
             {
                 ID = model.ID,
                 ID_TYPE = model.ID_TYPE,
                 NAME = model.NAME,
-                typeList = getList.getTypeSelectList(),
-                currentCoast = model.PRICE.Where(x => x.ID_MODEL.Equals(model.ID))
-                        .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST
+                typeList = getList.getTypeSelectList(),                
+                currentCoast = coast,
+                oldCoast = coast              
             };
             return View(modelData);
         }
@@ -135,28 +140,31 @@ namespace ASOC.WebUI.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ModelViewModel modelData)
-        {
+        {         
             if (ModelState.IsValid)
-            {
+            {             
                 MODEL model = new MODEL()
-                {
-                    ID = modelData.ID,
-                    ID_TYPE = modelData.ID_TYPE,
-                    NAME = modelData.NAME
-                };
-                PRICE price = new PRICE()
-                {
-                    COAST = Convert.ToDecimal(modelData.currentCoast),
-                    ID_MODEL = Convert.ToDecimal(modelData.ID),
-                    DATE_ADD = DateTime.Now
-                };
+                    {
+                        ID = modelData.ID,
+                        ID_TYPE = modelData.ID_TYPE,
+                        NAME = modelData.NAME
+                    };
+                modelRepository.Update(model);
+                modelRepository.Save();
 
-                    modelRepository.Update(model);
-                    modelRepository.Save();
-                    priceRepository.Create(price);                    
-                    priceRepository.Save();   
-                             
-                return RedirectToAction("Index");
+                if (modelData.currentCoast != modelData.oldCoast )
+                {
+                    PRICE price = new PRICE()
+                    {
+                        COAST = Convert.ToDecimal(modelData.currentCoast),
+                        ID_MODEL = Convert.ToDecimal(modelData.ID),
+                        DATE_ADD = DateTime.Now
+                    };
+                    priceRepository.Create(price);
+                    priceRepository.Save();
+                }
+
+                return RedirectToAction("Index");                
             }
             return View(modelData);
         }

@@ -308,12 +308,15 @@
     <Content Include="Views\Model\Delete.cshtml" />
     <Content Include="Views\Model\Edit.cshtml" />
     <Content Include="Views\Model\Create.cshtml" />
+    <Content Include="Views\Price\Delete.cshtml" />
+    <Content Include="Views\Price\Edit.cshtml" />
+    <Content Include="Views\Price\Create.cshtml" />
+    <Content Include="Views\Price\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Infrastructure\Binders\" />
     <Folder Include="Views\CurrentStatus\" />
-    <Folder Include="Views\Price\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

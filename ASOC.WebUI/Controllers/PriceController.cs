@@ -33,7 +33,7 @@ namespace ASOC.WebUI.Controllers
                 return HttpNotFound();
             }
 
-            PRICE price = priceRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(id));
+            PRICE price = priceRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(Convert.ToDecimal(id)));
 
             if (price == null)
             {
