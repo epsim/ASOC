@@ -45,8 +45,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TYPE.NAME)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.currentCoast)
+            <td>               
+                @Html.ActionLink(item.currentCoast.ToString(),"PriceChange", new { id = item.ID })              
             </td>            
             <td>
                 @Html.ActionLink("Изменить", "Edit", new { id = item.ID }) |

@@ -75,7 +75,56 @@ namespace ASOC.WebUI.Controllers
                 ID_TYPE = modelData.ID_TYPE
             };           
             return View(model);
-        }    
+        }
+
+        [HttpGet]
+        public ActionResult PriceChange(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            MODEL model = modelRepository.GetAllList().
+                FirstOrDefault(x => x.ID.Equals(Convert.ToDecimal(id)));
+
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+
+            decimal coast = model.PRICE.Where(x => x.ID_MODEL.Equals(model.ID))
+                       .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST;
+
+            ModelViewModel modelData = new ModelViewModel()
+            {
+                ID = model.ID,
+                ID_TYPE = model.ID_TYPE,
+                NAME = model.NAME,                
+                currentCoast = coast
+            };
+            return View(modelData);          
+        }
+
+        [HttpPost]
+        public ActionResult PriceChange(ModelViewModel modelData)
+        {
+            if (ModelState.IsValid)
+            {
+                PRICE price = new PRICE()
+                {
+                    COAST = Convert.ToDecimal(modelData.currentCoast),
+                    ID_MODEL = Convert.ToDecimal(modelData.ID),
+                    DATE_ADD = DateTime.Now
+                };
+                priceRepository.Create(price);
+                priceRepository.Save();
+                return RedirectToAction("Index");
+            }
+            else
+                return HttpNotFound();            
+        }
+
 
         // GET: Delete
         public ActionResult Delete(int? id)

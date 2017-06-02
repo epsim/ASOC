@@ -50,7 +50,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DATE_ADD)
             </td>
-            <td>               
+            <td>
                 @Html.ActionLink("Удалить", "Delete", new { id = item.ID })
             </td>
         </tr>
@@ -58,4 +58,4 @@
 </table>
 
 @Html.PagedListPager(Model.priceList, page => Url.Action("Index",
-    new { page, currentFilter =  Model.currentFilter }))
+    new { page, currentFilter = Model.currentFilter }))
