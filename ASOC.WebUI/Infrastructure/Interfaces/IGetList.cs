@@ -10,5 +10,8 @@ namespace ASOC.WebUI.Infrastructure.Interfaces
     public interface IGetList
     {
         SelectList getTypeSelectList();
+        SelectList getModelSelectList();
+        SelectList getModelSelectList(int id);
+        SelectList getStatusSelectList();
     }
 }

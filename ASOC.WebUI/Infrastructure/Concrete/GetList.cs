@@ -15,5 +15,17 @@ namespace ASOC.WebUI.Infrastructure.Concrete
         {
             return new SelectList(db.TYPE, "id","name");
         }
+        public SelectList getModelSelectList()
+        {
+            return new SelectList(db.MODEL, "id","name");
+        }
+        public SelectList getModelSelectList(int id)
+        {
+            return new SelectList(db.MODEL.Where(c => c.ID_TYPE == id).ToList());
+        }
+        public SelectList getStatusSelectList()
+        {
+            return new SelectList(db.STATUS, "id", "name");
+        }
     }
 }

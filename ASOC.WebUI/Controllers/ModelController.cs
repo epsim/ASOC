@@ -41,10 +41,15 @@ namespace ASOC.WebUI.Controllers
             modelData.currentFilter = modelData.searchString;
 
             var models = modelRepository.GetAllList();
+            decimal searchDigit;
+            bool isInt = Decimal.TryParse(modelData.searchString, out searchDigit);
 
             if (!String.IsNullOrEmpty(modelData.searchString))
-            {
-                models = models.Where(s => s.NAME.Contains(modelData.searchString)).OrderBy(s => s.NAME);
+            {              
+                if (!isInt)
+                {
+                    models = models.Where(s => s.NAME.Contains(modelData.searchString)).OrderBy(s => s.NAME);
+                }                  
             }
 
             if(modelData.ID_TYPE!=0)
@@ -65,7 +70,15 @@ namespace ASOC.WebUI.Controllers
                     TYPE = item.TYPE, currentCoast = item.PRICE.Where(x => x.ID_MODEL.Equals(item.ID))
                         .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST });
             }
-                     
+
+            if (!String.IsNullOrEmpty(modelData.searchString))
+            {
+                if (isInt)
+                {
+                    modelList = modelList.FindAll(m => m.currentCoast.Equals(searchDigit));
+                }
+            }
+
             ModelViewModel model = new ModelViewModel
             {
                 modelList = modelList.ToPagedList(pageNumber, pageSize),
