@@ -26,6 +26,6 @@ namespace ASOC.WebUI.Infrastructure.Concrete
         public SelectList getStatusSelectList()
         {
             return new SelectList(db.STATUS, "id", "name");
-        }
+        }       
     }
 }

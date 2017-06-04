@@ -20,14 +20,12 @@ namespace ASOC.Domain
             this.CURRENT_STATUS = new HashSet<CURRENT_STATUS>();
         }
     
-        public Nullable<decimal> ID_SERIES { get; set; }
+        public string ID_SERIES { get; set; }
         public Nullable<decimal> ID_MODEL { get; set; }
         public Nullable<decimal> ID_TYPE { get; set; }
-        public string NAME { get; set; }
         public Nullable<System.DateTime> DATE_ADD { get; set; }
         public string PARTNUMBER { get; set; }
         public decimal ID { get; set; }
-        public Nullable<decimal> AMOUNT { get; set; }
     
         public virtual MODEL MODEL { get; set; }
         public virtual TYPE TYPE { get; set; }

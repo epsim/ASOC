@@ -9,20 +9,18 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID_SERIES" Type="number" Precision="38" Scale="0" />
+          <Property Name="ID_SERIES" Type="varchar2" MaxLength="100" />
           <Property Name="ID_MODEL" Type="number" Precision="38" Scale="0" />
           <Property Name="ID_TYPE" Type="number" Precision="38" Scale="0" />
-          <Property Name="NAME" Type="varchar2" MaxLength="200" />
           <Property Name="DATE_ADD" Type="date" />
           <Property Name="PARTNUMBER" Type="varchar2" MaxLength="200" />
           <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="AMOUNT" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="CURRENT_STATUS">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ID_COMPLECT" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ID_STATUS" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATE_STATUS" Type="date" Nullable="false" />
@@ -55,7 +53,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ID_CURRENT" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="REASON" Type="varchar2" MaxLength="200" Nullable="false" />
           <Property Name="COSTS" Type="number" Precision="38" Scale="0" />
@@ -201,14 +199,12 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID_SERIES" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="ID_SERIES" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ID_MODEL" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="ID_TYPE" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="DATE_ADD" Type="DateTime" />
           <Property Name="PARTNUMBER" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="AMOUNT" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="MODEL" Relationship="Self.COMPONENT_MODEL_FK" FromRole="COMPONENT" ToRole="MODEL" />
           <NavigationProperty Name="TYPE" Relationship="Self.COMPONENT_TYPE_FK" FromRole="COMPONENT" ToRole="TYPE" />
           <NavigationProperty Name="CURRENT_STATUS" Relationship="Self.CURRENT_STATUS_COMPONENT" FromRole="COMPONENT" ToRole="CURRENT_STATUS" />
@@ -217,7 +213,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_COMPLECT" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ID_STATUS" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATE_STATUS" Type="DateTime" Nullable="false" />
@@ -258,7 +254,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_CURRENT" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="REASON" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="COSTS" Type="Decimal" Precision="38" Scale="0" />
@@ -410,11 +406,9 @@
                 <ScalarProperty Name="ID_SERIES" ColumnName="ID_SERIES" />
                 <ScalarProperty Name="ID_MODEL" ColumnName="ID_MODEL" />
                 <ScalarProperty Name="ID_TYPE" ColumnName="ID_TYPE" />
-                <ScalarProperty Name="NAME" ColumnName="NAME" />
                 <ScalarProperty Name="DATE_ADD" ColumnName="DATE_ADD" />
                 <ScalarProperty Name="PARTNUMBER" ColumnName="PARTNUMBER" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

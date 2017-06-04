@@ -1,0 +1,35 @@
+﻿@model ASOC.WebUI.ViewModels.CurrentStatusViewModel
+
+@{
+    ViewBag.Title = "Редактирования статуса";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <br />
+        <h3>Изменение статуса КМ «@Html.DisplayFor(model => model.COMPONENT.ID_SERIES)»</h3>
+        <hr />
+
+        @Html.HiddenFor(m => m.ID_COMPLECT)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })      
+        <div class="form-group">
+            @Html.Label("Статус", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.ID_STATUS, Model.statusList, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Изменить" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Назад", "Index")
+</div>

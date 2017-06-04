@@ -14,11 +14,14 @@ namespace ASOC.WebUI.Controllers
     {
         IRepository<COMPONENT> componentRepository;
         IGetList getList;
+        IRepository<CURRENT_STATUS> statusRepository;
 
-        public ComponentController(IRepository<COMPONENT> componentRepositoryParam, IGetList getListParam)
+        public ComponentController(IRepository<COMPONENT> componentRepositoryParam, IGetList getListParam,
+            IRepository<CURRENT_STATUS> statusRepositoryParam)
         {
             componentRepository = componentRepositoryParam;
             getList = getListParam;
+            statusRepository = statusRepositoryParam;
         }
 
         // GET: Index                  
@@ -69,15 +72,14 @@ namespace ASOC.WebUI.Controllers
             {
                 componentList.Add(new ComponentViewModel()
                 {
-                    ID = item.ID,
-                    AMOUNT = item.AMOUNT,
+                    ID = item.ID,                    
                     DATE_ADD = item.DATE_ADD,
                     ID_MODEL = item.ID_MODEL,
                     ID_SERIES = item.ID_SERIES,
-                    ID_TYPE = item.ID_TYPE,
-                    NAME = item.NAME,
+                    ID_TYPE = item.ID_TYPE,                   
                     PARTNUMBER = item.PARTNUMBER,
-                    CURRENT_STATUS = item.CURRENT_STATUS,
+                    currentStatus = item.CURRENT_STATUS.Where(x => x.ID_COMPLECT.Equals(item.ID))
+                        .OrderByDescending(x => x.DATE_STATUS).FirstOrDefault().STATUS.NAME,
                     MODEL = item.MODEL,
                     TYPE = item.TYPE,
                     currentCoast = item.MODEL.PRICE.Where(x => x.ID_MODEL.Equals(item.ID))
@@ -102,7 +104,59 @@ namespace ASOC.WebUI.Controllers
                 statusList = getList.getStatusSelectList()
             };
             return View(model);
-        } 
+        }
+
+        [HttpGet]
+        public ActionResult StatusChange(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            COMPONENT component = componentRepository.GetAllList().
+                FirstOrDefault(x => x.ID.Equals(Convert.ToDecimal(id)));
+
+            if (component == null)
+            {
+                return HttpNotFound();
+            }
+
+            decimal status = component.CURRENT_STATUS.Where(x => x.ID_COMPLECT.Equals(component.ID))
+                .OrderByDescending(x => x.DATE_STATUS).FirstOrDefault().ID_STATUS;
+            string statusName = component.CURRENT_STATUS.Where(x => x.ID_COMPLECT.Equals(component.ID))
+                .OrderByDescending(x => x.DATE_STATUS).FirstOrDefault().STATUS.NAME;
+
+            CurrentStatusViewModel modelData = new CurrentStatusViewModel()
+            {
+                ID = component.ID,
+                ID_COMPLECT = component.ID,
+                ID_STATUS = status,
+                statusList = getList.getStatusSelectList()                                       
+            };
+
+            return View(modelData);
+        }
+
+        [HttpPost]
+        public ActionResult StatusChange(CurrentStatusViewModel modelData)
+        {
+            if (ModelState.IsValid)
+            {
+                CURRENT_STATUS status = new CURRENT_STATUS()
+                {                  
+                    ID_COMPLECT = modelData.ID_COMPLECT,
+                    ID_STATUS = modelData.ID_STATUS,
+                    DATE_STATUS = DateTime.Now
+                };
+
+                statusRepository.Create(status);
+                statusRepository.Save();
+                return RedirectToAction("Index");
+            }
+            else
+                return HttpNotFound();
+        }
 
         // GET: Delete
         public ActionResult Delete(int? id)

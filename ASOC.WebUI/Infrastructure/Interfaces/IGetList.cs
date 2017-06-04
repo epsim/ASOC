@@ -12,6 +12,6 @@ namespace ASOC.WebUI.Infrastructure.Interfaces
         SelectList getTypeSelectList();
         SelectList getModelSelectList();
         SelectList getModelSelectList(int id);
-        SelectList getStatusSelectList();
+        SelectList getStatusSelectList();       
     }
 }

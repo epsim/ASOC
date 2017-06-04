@@ -311,6 +311,7 @@
     <Content Include="Views\Price\Delete.cshtml" />
     <Content Include="Views\Price\Index.cshtml" />
     <Content Include="Views\Model\PriceChange.cshtml" />
+    <Content Include="Views\Component\StatusChange.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

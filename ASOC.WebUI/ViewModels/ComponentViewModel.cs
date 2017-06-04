@@ -17,6 +17,6 @@ namespace ASOC.WebUI.ViewModels
         public string currentFilter { get; set; }
         public SelectList typeList { get; set; }
         public SelectList statusList { get; set; }
-        public IPagedList<ComponentViewModel> componentList { get; set; } 
+        public IPagedList<ComponentViewModel> componentList { get; set; }
     }
 }
