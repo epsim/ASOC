@@ -17,15 +17,17 @@ namespace ASOC.Domain
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CURRENT_STATUS()
         {
-            this.COMPONENT = new HashSet<COMPONENT>();
+            this.STATUS_REASON = new HashSet<STATUS_REASON>();
         }
     
-        public decimal ID_SERIES { get; set; }
-        public Nullable<decimal> ID_STATUS { get; set; }
-        public Nullable<System.DateTime> DATE_STATUS { get; set; }
+        public decimal ID { get; set; }
+        public decimal ID_COMPLECT { get; set; }
+        public decimal ID_STATUS { get; set; }
+        public System.DateTime DATE_STATUS { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<COMPONENT> COMPONENT { get; set; }
+        public virtual COMPONENT COMPONENT { get; set; }
         public virtual STATUS STATUS { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<STATUS_REASON> STATUS_REASON { get; set; }
     }
 }

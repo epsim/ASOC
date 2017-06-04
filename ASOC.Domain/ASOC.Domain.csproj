@@ -90,6 +90,9 @@
     <Compile Include="STATUS.cs">
       <DependentUpon>Domain.tt</DependentUpon>
     </Compile>
+    <Compile Include="STATUS_REASON.cs">
+      <DependentUpon>Domain.tt</DependentUpon>
+    </Compile>
     <Compile Include="TYPE.cs">
       <DependentUpon>Domain.tt</DependentUpon>
     </Compile>
